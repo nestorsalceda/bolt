@@ -1,0 +1,26 @@
+!!! 5
+
+%html.no-js{:lang => "es"}
+
+  %head
+    %meta{:charset => "utf-8"}
+    %title
+      Bolt · Manage desk lights
+    %meta{:name => "description", :content => ""}
+    %meta{:name => "keywords", :content => ""}
+    %meta{:name => "author", :content => ""}
+    %meta{:name => "viewport", :content => "width=device-width, initial-scale=1"}
+
+    = css :application
+    = js :modernizr
+  %body
+    = js :application
+
+    .row
+      .large-12.columns
+        = yield
+
+    %script
+      $(document).foundation();
+
+

@@ -1,0 +1,12 @@
+source "http://rubygems.org/"
+
+gemspec :name => 'bolt'
+
+gem "sinatra", "~> 1.4.5"
+gem 'sinatra-assetpack', "~> 0.3.3"
+gem "haml", "~> 4.0.5"
+
+group :development do
+  gem "rerun", "~> 0.10.0"
+  gem "rspec", "~> 3.0.0"
+end

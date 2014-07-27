@@ -1,0 +1,18 @@
+.blue {
+  border-color: #007BA0;
+  background-color: #2ba6cb;
+}
+
+.red {
+  border-color: #DE2B0F;
+  background-color: #c60f13;
+}
+
+.black {
+  border-color: #111111;
+  background-color: #222222;
+}
+
+.blue h1, .red h1, .black h1 {
+  color: white;
+}
