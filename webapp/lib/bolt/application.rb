@@ -6,8 +6,21 @@ module Bolt
   class Application < Sinatra::Base
     register Sinatra::AssetPack
 
+    def initialize(app = nil)
+      super(app)
+      @lights_service = LightService.new
+    end
+
     get '/' do
-      haml :index, layout: :layout
+      haml :index, layout: :layout, locals: { :enabled => @lights_service.enabled? }
+    end
+
+    post '/enable' do
+      @lights_service.enable
+    end
+
+    post '/disable' do
+      @lights_service.disable
     end
 
     assets do

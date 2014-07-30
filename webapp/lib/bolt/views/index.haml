@@ -1,0 +1,21 @@
+.row
+  .large-12.panel.columns
+    .large-2.columns
+      .switch.large.radius
+        %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
+        %label{ :for => 'light-switch' }
+    .large-10.columns
+      %label.inline
+        Luz del escritorio
+
+:javascript
+  $(function() {
+    $('#light-switch').change(function(event) {
+      if ($(this).is(':checked')) {
+        $.post('/enable');
+      }
+      else {
+        $.post('/disable');
+      }
+    });
+  });
