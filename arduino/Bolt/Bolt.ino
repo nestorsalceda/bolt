@@ -10,7 +10,7 @@ boolean enabled = false;
 
 void setup()
 {
-  disable();
+  enable();
   Serial.begin(115200);
   Serial.println("Ready to receive commands.");
 }
@@ -32,11 +32,11 @@ void loop()
     }
     else if (command == "enabled?")
     {
-      Serial.write(enabled);
+      Serial.println(enabled);
     }
     else
     {
-      Serial.write("ERROR: Unknown command");
+      Serial.println("ERROR: Unknown command");
     }
   }
 }
