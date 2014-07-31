@@ -10,7 +10,7 @@ boolean enabled = false;
 
 void setup()
 {
-  enable();
+  disable();
   Serial.begin(115200);
   Serial.println("Ready to receive commands.");
 }
