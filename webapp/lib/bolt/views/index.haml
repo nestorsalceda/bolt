@@ -1,11 +1,10 @@
-.row
-  .large-12.panel.columns
-    .large-2.columns
-      .switch.large.radius
+%section#main
+  .row
+    .small-10.small-centered.medium-8.large-4.large-centered.panel.columns
+      .switch.large.radius.left
         %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
         %label{ :for => 'light-switch' }
-    .large-10.columns
-      %label.inline
+      %label.inline.light-label.right
         Luz del escritorio
 
 :javascript

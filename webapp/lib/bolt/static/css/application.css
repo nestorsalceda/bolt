@@ -1,18 +1,17 @@
-.blue {
-  border-color: #007BA0;
-  background-color: #2ba6cb;
+#main {
+  height: 100%;
 }
 
-.red {
-  border-color: #DE2B0F;
-  background-color: #c60f13;
+#main > div {
+  height: 5rem;
+  margin: auto;
+  position: absolute;
+  top: 0px;
+  bottom: 0px;
+  right: 0px;
+  left: 0px;
 }
 
-.black {
-  border-color: #111111;
-  background-color: #222222;
-}
-
-.blue h1, .red h1, .black h1 {
-  color: white;
+.light-label {
+  font-weight: bold;
 }
