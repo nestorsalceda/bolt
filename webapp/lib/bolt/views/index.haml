@@ -7,6 +7,8 @@
       %label.inline.light-label.right
         Luz del escritorio
 
+      %input{ :id => 'color-selector', :type => 'color' }
+
 :javascript
   $(function() {
     $('#light-switch').change(function(event) {
@@ -16,5 +18,10 @@
       else {
         $.post('/disable');
       }
+    });
+
+    $('#color-selector').change(function() {
+      $.post('/enable?' + $.param({ color: $(this).val()}));
+      $('#light-switch').prop('checked', true);
     });
   });

@@ -16,7 +16,14 @@ module Bolt
     end
 
     post '/enable' do
-      @lights_service.enable
+      if params[:color].nil?
+        @lights_service.enable
+      else
+        red = params[:color][1,2].hex
+        green = params[:color][3,2].hex
+        blue = params[:color][5,2].hex
+        @lights_service.enable(red, green, blue)
+      end
     end
 
     post '/disable' do
