@@ -1,13 +1,17 @@
 %section#main
-  .row
-    .small-10.small-centered.medium-8.large-4.large-centered.panel.columns
-      .switch.large.radius.left
-        %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
-        %label{ :for => 'light-switch' }
-      %label.inline.light-label.right
-        Luz del escritorio
-
-      %input{ :id => 'color-selector', :type => 'color' }
+  %section
+    .row
+      .small-10.small-centered.medium-8.large-4.large-centered.panel.columns
+        .switch.large.radius.left
+          %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
+          %label{ :for => 'light-switch' }
+        %label.inline.light-label.right
+          Luz del escritorio
+    .row
+      .small-10.small-centered.medium-8.large-4.large-centered.panel.columns
+        %input.left{ :id => 'color-selector', :type => 'color' }
+        %label.inline.light-label.right
+          Color de la luz
 
 :javascript
   $(function() {

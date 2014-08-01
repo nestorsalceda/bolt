@@ -8,11 +8,11 @@ module Bolt
 
     def initialize(app = nil)
       super(app)
-      @lights_service = LightService.new
+      #@lights_service = LightService.new
     end
 
     get '/' do
-      haml :index, layout: :layout, locals: { :enabled => @lights_service.enabled? }
+      haml :index, layout: :layout, locals: { :enabled => true }# @lights_service.enabled? }
     end
 
     post '/enable' do
