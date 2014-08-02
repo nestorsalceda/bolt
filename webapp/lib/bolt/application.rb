@@ -8,7 +8,7 @@ module Bolt
 
     def initialize(app = nil)
       super(app)
-      @lights_service = LightService.new
+      @lights_service = Factory::create_light_service
     end
 
     get '/' do
