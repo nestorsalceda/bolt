@@ -71,7 +71,7 @@ module Bolt
     private
 
     def broadcast(message)
-      @sockets.each { |socket| socket.send(message) }
+      EM.next_tick { @sockets.each { |socket| socket.send(message) } }
     end
   end
 end
