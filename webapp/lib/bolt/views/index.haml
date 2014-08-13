@@ -17,7 +17,7 @@
   $(function() {
     $('#light-switch').change(function(event) {
       if ($(this).is(':checked')) {
-        $.post('/enable');
+        $.post('/rgb');
       }
       else {
         $.post('/disable');
@@ -25,7 +25,7 @@
     });
 
     $('#color-selector').change(function() {
-      $.post('/enable?' + $.param({ color: $(this).val()}));
+      $.post('/rgb?' + $.param({ color: $(this).val()}));
       $('#light-switch').prop('checked', true);
     });
   });

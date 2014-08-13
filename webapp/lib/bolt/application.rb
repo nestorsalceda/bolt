@@ -15,14 +15,14 @@ module Bolt
       haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled? }
     end
 
-    post '/enable' do
+    post '/rgb' do
       if params[:color].nil?
-        @lights_service.enable
+        @lights_service.rgb(255, 255, 255)
       else
         red = params[:color][1,2].hex
         green = params[:color][3,2].hex
         blue = params[:color][5,2].hex
-        @lights_service.enable(red, green, blue)
+        @lights_service.rgb(red, green, blue)
       end
     end
 

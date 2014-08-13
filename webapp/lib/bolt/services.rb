@@ -12,8 +12,8 @@ module Bolt
       @enabled = false
     end
 
-    def enable(red=255, green=255, blue=255)
-      @lights.write("enable #{red},#{green},#{blue}")
+    def rgb(red, green, blue)
+      @lights.write("rgb #{red},#{green},#{blue}")
       @enabled = true
     end
 
