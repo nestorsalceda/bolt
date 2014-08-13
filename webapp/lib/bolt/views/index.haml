@@ -15,6 +15,10 @@
 
 :javascript
   $(function() {
+    var setSwitchState = function(state) {
+      $('#light-switch').prop('checked', state);
+    };
+
     $('#light-switch').change(function(event) {
       if ($(this).is(':checked')) {
         $.post('/rgb');
@@ -26,6 +30,19 @@
 
     $('#color-selector').change(function() {
       $.post('/rgb?' + $.param({ color: $(this).val()}));
-      $('#light-switch').prop('checked', true);
+      switchState(true);
     });
+
+    var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
+    ws.onmessage = function(event) {
+      var message = event.data;
+      switch(message) {
+        case 'enabled':
+          setSwitchState(true);
+          break;
+        case 'disabled':
+          setSwitchState(false);
+          break;
+      }
+    };
   });

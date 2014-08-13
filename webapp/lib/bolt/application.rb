@@ -1,4 +1,5 @@
 require 'sinatra/base'
+require 'sinatra-websocket'
 require 'sinatra/assetpack'
 require 'haml'
 
@@ -9,10 +10,22 @@ module Bolt
     def initialize(app = nil)
       super(app)
       @lights_service = Factory::create_light_service
+      @sockets = []
     end
 
     get '/' do
-      haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled? }
+      if !request.websocket?
+        haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled? }
+      else
+        request.websocket do |ws|
+          ws.onopen do
+            @sockets << ws
+          end
+          ws.onclose do
+            @sockets.delete(ws)
+          end
+        end
+      end
     end
 
     post '/rgb' do
@@ -24,10 +37,12 @@ module Bolt
         blue = params[:color][5,2].hex
         @lights_service.rgb(red, green, blue)
       end
+      broadcast('enabled')
     end
 
     post '/disable' do
       @lights_service.disable
+      broadcast('disabled')
     end
 
     assets do
@@ -51,6 +66,12 @@ module Bolt
 
       js_compression :jsmin
       css_compression :sass
+    end
+
+    private
+
+    def broadcast(message)
+      @sockets.each { |socket| socket.send(message) }
     end
   end
 end

@@ -5,13 +5,10 @@ gemspec :name => 'bolt'
 gem "serialport"
 gem "sinatra", "~> 1.4.5"
 gem 'sinatra-assetpack', "~> 0.3.3"
+gem 'sinatra-websocket', "~> 0.3.0"
 gem "haml", "~> 4.0.5"
 
 group :development do
   gem "rerun", "~> 0.10.0"
   gem "rspec", "~> 3.0.0"
-end
-
-group :production do
-  gem "puma", "~> 2.9.0"
 end
