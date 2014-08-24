@@ -15,4 +15,5 @@ end
 
 group :production do
   gem "thin"
+  gem "foreman"
 end
