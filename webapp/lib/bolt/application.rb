@@ -48,6 +48,7 @@ module Bolt
     assets do
       serve '/js', :from => 'static/js'
       serve '/css', :from => 'static/css'
+      serve '/fonts', :from => 'static/fonts'
 
       js :modernizr, [
         '/js/vendor/modernizr.js',
@@ -55,12 +56,14 @@ module Bolt
 
       js :application, [
         '/js/vendor/jquery.js',
-        '/js/foundation/foundation.js',
+        '/js/bootstrap.js',
+        '/js/bootstrap-switch.js',
       ]
 
       css :application, [
-        '/css/normalize.css',
-        '/css/foundation.css',
+        '/css/bootstrap.css',
+        '/css/bootstrap-theme.css',
+        '/css/bootstrap-switch.css',
         '/css/application.css'
       ]
 
