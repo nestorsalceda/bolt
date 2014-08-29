@@ -83,8 +83,9 @@ void loop()
     }
     else
     {
-      Serial.println("ERROR: Unknown command");
+      Serial.println("ERROR: Unknown command " + command);
     }
   }
+  delay(20);
 }
 
