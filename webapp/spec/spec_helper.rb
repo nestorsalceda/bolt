@@ -1,1 +1,1 @@
-require 'bolt'
+require 'bolt/services'

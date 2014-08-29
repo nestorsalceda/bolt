@@ -9,21 +9,21 @@ module Bolt
       parity = SerialPort::NONE
 
       @lights = SerialPort.new(device, bauds, data_bits, stop_bits, parity)
-      @enabled = false
+      @lights.read_timeout = 100
+      @lights.readlines
     end
 
     def rgb(red, green, blue)
-      @lights.write("rgb #{red},#{green},#{blue}")
-      @enabled = true
+      @lights.write("rgb #{red},#{green},#{blue}\n")
     end
 
     def disable
-      @lights.write('disable')
-      @enabled = false
+      @lights.write("disable\n")
     end
 
     def enabled?
-      @enabled
+      @lights.write("enabled?\n")
+      @lights.read.include?('1')
     end
   end
 
