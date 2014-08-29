@@ -38,7 +38,8 @@ void disable()
   enabled = false;
 }
 
-void setColor(rgb_color& color) {
+void setColor(rgb_color& color)
+{
   for(uint16_t i = 0; i < LED_COUNT; i++)
   {
     colors[i] = color;
