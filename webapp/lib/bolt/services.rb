@@ -14,16 +14,23 @@ module Bolt
     end
 
     def rgb(red, green, blue)
-      @lights.write("rgb #{red},#{green},#{blue}\n")
+      send_command("rgb #{red},#{green},#{blue}")
     end
 
     def disable
-      @lights.write("disable\n")
+      send_command("disable")
     end
 
     def enabled?
-      @lights.write("enabled?\n")
-      @lights.read.include?('1')
+      result = send_command("enabled?")
+      result.include? '1'
+    end
+
+    private
+
+    def send_command(command)
+      @lights.write("#{command}\n")
+      @lights.read
     end
   end
 
