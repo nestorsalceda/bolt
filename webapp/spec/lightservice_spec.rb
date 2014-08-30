@@ -15,5 +15,11 @@ module Bolt
 
       expect(@service.enabled?).to eq(false)
     end
+
+    it 'checks temperature' do
+      temperature = @service.temperature
+
+      expect(temperature).to be_kind_of(Float)
+    end
   end
 end

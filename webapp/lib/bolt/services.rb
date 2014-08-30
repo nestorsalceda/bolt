@@ -26,6 +26,11 @@ module Bolt
       result.include? '1'
     end
 
+    def temperature
+      result = send_command("temperature?")
+      result.to_f
+    end
+
     private
 
     def send_command(command)
