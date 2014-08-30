@@ -1,5 +1,6 @@
 #include <PololuLedStrip.h>
 
+#define TEMPERATURE_PIN 0
 PololuLedStrip<12> ledStrip;
 
 #define LED_COUNT 60
@@ -48,6 +49,16 @@ void setColor(rgb_color& color)
   ledStrip.write(colors, LED_COUNT);
 }
 
+float temperature(int b=3950.0, int r_0=2800, float t_0=298.15)
+{
+  int v_0 = analogRead(TEMPERATURE_PIN);
+  float r = 10000.0;
+  float r_t = r * (1023 / float(v_0) - 1);
+  float t_kelvin = b / log(r_t / (r_0 * pow(M_E, (-b/t_0))));
+
+  return t_kelvin - 273.15;
+}
+
 void loop()
 {
   if (Serial.available())
@@ -62,6 +73,10 @@ void loop()
     else if (command == "enabled?")
     {
       Serial.println(enabled);
+    }
+    else if (command == "temperature?")
+    {
+      Serial.println(temperature());
     }
     else if (command.startsWith("rgb"))
     {
