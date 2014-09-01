@@ -10,19 +10,22 @@ module Bolt
     def initialize(app = nil)
       super(app)
       @lights_service = Factory::create_light_service
-      @sockets = []
+      @message_hub = MessageHub.new
+
+      @temperature_publisher = PublishTemperatureService.new(@lights_service, @message_hub)
+      @temperature_publisher.publish_temperature
     end
 
     get '/' do
       if !request.websocket?
-        haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled? }
+        haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled?, :temperature => @lights_service.temperature }
       else
         request.websocket do |ws|
           ws.onopen do
-            @sockets << ws
+            @message_hub.add_subscriber(ws)
           end
           ws.onclose do
-            @sockets.delete(ws)
+            @message_hub.remove_subscriber(ws)
           end
         end
       end
@@ -37,12 +40,12 @@ module Bolt
         blue = params[:color][5,2].hex
         @lights_service.rgb(red, green, blue)
       end
-      broadcast('enabled')
+      @message_hub.broadcast('enabled')
     end
 
     post '/disable' do
       @lights_service.disable
-      broadcast('disabled')
+      @message_hub.broadcast('disabled')
     end
 
     assets do
@@ -69,12 +72,6 @@ module Bolt
 
       js_compression :jsmin
       css_compression :sass
-    end
-
-    private
-
-    def broadcast(message)
-      EM.next_tick { @sockets.each { |socket| socket.send(message) } }
     end
   end
 end

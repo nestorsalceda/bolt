@@ -7,6 +7,7 @@ gem "sinatra", "~> 1.4.5"
 gem 'sinatra-assetpack', "~> 0.3.3"
 gem 'sinatra-websocket', "~> 0.3.0"
 gem "haml", "~> 4.0.5"
+gem "rufus-scheduler", "~> 3.0.9"
 
 group :development do
   gem "rerun", "~> 0.10.0"

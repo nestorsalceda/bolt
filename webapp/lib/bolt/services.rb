@@ -1,4 +1,5 @@
 require 'serialport'
+require 'rufus-scheduler'
 
 module Bolt
   class LightService
@@ -42,6 +43,21 @@ module Bolt
   class FakeLightService < LightService
     def initialize(device)
       @lights = StringIO.new
+    end
+  end
+
+  class PublishTemperatureService
+    def initialize(light_service, message_hub)
+      @light_service = light_service
+      @message_hub = message_hub
+      @scheduler = Rufus::Scheduler.new
+    end
+
+    def publish_temperature
+      @scheduler.every '5s' do
+        temperature = @light_service.temperature
+        @message_hub.broadcast(temperature.to_s)
+      end
     end
   end
 end
