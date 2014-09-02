@@ -10,7 +10,7 @@ module Bolt
 
       result = @temperature_retriever.temperature
 
-      expect(result).to be(25.0)
+      expect(result).to eq(25.0)
     end
   end
 end
