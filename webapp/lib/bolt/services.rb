@@ -38,7 +38,7 @@ module Bolt
     end
 
     def schedule_and_notify
-      @scheduler.every '5m' do
+      @scheduler.every '1m' do
         temperature = @temperature_retriever.temperature
         @message_hub.broadcast({ :type => :temperature, :value => temperature })
       end
