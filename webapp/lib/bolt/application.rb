@@ -46,12 +46,12 @@ module Bolt
         blue = params[:color][5,2].hex
         @lights_handler.rgb(red, green, blue)
       end
-      @message_hub.broadcast({ :type => :lights_event, :enabled => true })
+      @message_hub.broadcast({ :type => :lights, :enabled => true })
     end
 
     post '/disable' do
       @lights_handler.disable
-      @message_hub.broadcast({ :type => :lights_event, :enabled => false })
+      @message_hub.broadcast({ :type => :lights, :enabled => false })
     end
 
     assets do
