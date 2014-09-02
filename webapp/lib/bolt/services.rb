@@ -30,18 +30,18 @@ module Bolt
     end
   end
 
-  #class PublishTemperatureService
-  #  def initialize(light_service, message_hub)
-  #    @light_service = light_service
-  #    @message_hub = message_hub
-  #    @scheduler = Rufus::Scheduler.new
-  #  end
+  class ScheduledTemperatureRetriever
+    def initialize(temperature_retriever, message_hub)
+      @temperature_retriever = temperature_retriever
+      @message_hub = message_hub
+      @scheduler = Rufus::Scheduler.new
+    end
 
-  #  def publish_temperature
-  #    @scheduler.every '5s' do
-  #      temperature = @light_service.temperature
-  #      @message_hub.broadcast(temperature.to_s)
-  #    end
-  #  end
-  #end
+    def schedule_and_notify
+      @scheduler.every '5m' do
+        temperature = @temperature_retriever.temperature
+        @message_hub.broadcast({ :type => :temperature_event, :value => temperature })
+      end
+    end
+  end
 end

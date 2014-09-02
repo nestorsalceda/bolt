@@ -1,4 +1,5 @@
 require 'serialport'
+require 'json'
 
 module Bolt
   class Arduino
@@ -34,7 +35,7 @@ module Bolt
     end
 
     def broadcast(message)
-      EM.next_tick { @subscribers.each { |subscriber| subscriber.send(message) } }
+      EM.next_tick { @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) } }
     end
   end
 end

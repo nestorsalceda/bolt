@@ -9,16 +9,22 @@ module Bolt
 
     def initialize(app = nil)
       super(app)
-      @lights_service = Factory::create_light_service
-      @message_hub = MessageHub.new
+      factory = Factory.new
 
-      @temperature_publisher = PublishTemperatureService.new(@lights_service, @message_hub)
-      @temperature_publisher.publish_temperature
+      @lights_handler = factory.create_lights_handler
+      @temperature_retriever = factory.create_temperature_retriever
+
+      @message_hub = MessageHub.new
+      @scheduled_temperature_retriever = ScheduledTemperatureRetriever.new(@temperature_retriever, @message_hub)
+      @scheduled_temperature_retriever.schedule_and_notify
     end
 
     get '/' do
       if !request.websocket?
-        haml :index, layout: :layout, locals: { :enabled =>  @lights_service.enabled?, :temperature => @lights_service.temperature }
+        haml :index, layout: :layout, locals: {
+          :enabled =>  @lights_handler.enabled?,
+          :temperature => @temperature_retriever.temperature
+        }
       else
         request.websocket do |ws|
           ws.onopen do
@@ -33,19 +39,19 @@ module Bolt
 
     post '/rgb' do
       if params[:color].nil?
-        @lights_service.rgb(255, 255, 255)
+        @lights_handler.rgb(255, 255, 255)
       else
         red = params[:color][1,2].hex
         green = params[:color][3,2].hex
         blue = params[:color][5,2].hex
-        @lights_service.rgb(red, green, blue)
+        @lights_handler.rgb(red, green, blue)
       end
-      @message_hub.broadcast('enabled')
+      @message_hub.broadcast({ :type => :lights_event, :enabled => true })
     end
 
     post '/disable' do
-      @lights_service.disable
-      @message_hub.broadcast('disabled')
+      @lights_handler.disable
+      @message_hub.broadcast({ :type => :lights_event, :enabled => false })
     end
 
     assets do

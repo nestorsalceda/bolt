@@ -1,6 +1,5 @@
 module Bolt
   class Factory
-
     def create_lights_handler
       LightsHandler.new(arduino)
     end

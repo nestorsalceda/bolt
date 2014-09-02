@@ -52,16 +52,14 @@
 
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
     ws.onmessage = function(event) {
-      var message = event.data;
-      switch(message) {
-        case 'enabled':
-          setSwitchState(true);
+      var message = JSON.parse(event.data);
+      console.log(message);
+      switch(message.type) {
+        case 'lights_event':
+          setSwitchState(message.enabled);
           break;
-        case 'disabled':
-          setSwitchState(false);
-          break;
-        default:
-          $('#temperature').text(message);
+        case 'temperature_event':
+          $('#temperature').text(message.value);
           break;
       }
     };
