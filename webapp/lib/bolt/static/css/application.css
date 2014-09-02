@@ -12,6 +12,11 @@
   left: 0px;
 }
 
+.large-switch-panel {
+  padding-top: 17.5px;
+  padding-bottom: 17.5px;
+}
+
 #temperature {
   font-size: 36px;
 }
