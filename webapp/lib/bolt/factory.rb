@@ -1,13 +1,21 @@
 module Bolt
   class Factory
-    def self.create_light_service
-      debug = ENV.fetch('DEBUG', false)
+
+    def create_lights_handler
+      LightsHandler.new(arduino)
+    end
+
+    def create_temperature_retriever
+      TemperatureRetriever.new(arduino)
+    end
+
+    private
+
+    def arduino
+      @arduino unless @arduino.nil?
+
       device = ENV.fetch('ARDUINO_DEVICE', '/dev/ttyACM0')
-      if debug
-        FakeLightService.new(device)
-      else
-        LightService.new(device)
-      end
+      @arduino = Arduino.new(device)
     end
   end
 end
