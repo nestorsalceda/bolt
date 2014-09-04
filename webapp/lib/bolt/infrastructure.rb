@@ -1,5 +1,6 @@
-require 'serialport'
 require 'json'
+require 'logger'
+require 'serialport'
 
 module Bolt
   class Arduino
@@ -24,17 +25,21 @@ module Bolt
 
     def initialize
       @subscribers = []
+      @logger = Logger.new(STDERR)
     end
 
     def add_subscriber(subscriber)
+      @logger.info "Adding subscriber #{subscriber}"
       @subscribers << subscriber
     end
 
     def remove_subscriber(subscriber)
+      @logger.info "Removing subscriber #{subscriber}"
       @subscribers.delete(subscriber)
     end
 
     def broadcast(message)
+      @logger.info "Broadcasting #{message} to #{@subscribers.length} subscribers"
       EM.next_tick { @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) } }
     end
   end
