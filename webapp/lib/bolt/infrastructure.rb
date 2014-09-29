@@ -39,8 +39,8 @@ module Bolt
     end
 
     def broadcast(message)
-      @logger.info "Broadcasting #{message} to #{@subscribers.length} subscribers"
-      EM.next_tick { @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) } }
+      @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) }
+      @logger.info "Broadcasted #{message} to #{@subscribers.length} subscribers"
     end
   end
 end

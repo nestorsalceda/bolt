@@ -1,5 +1,5 @@
 require 'sinatra/base'
-require 'sinatra-websocket'
+require 'faye/websocket'
 require 'sinatra/assetpack'
 require 'haml'
 
@@ -20,20 +20,23 @@ module Bolt
     end
 
     get '/' do
-      if !request.websocket?
+      unless Faye::WebSocket.websocket?(request.env)
         haml :index, layout: :layout, locals: {
           :enabled =>  @lights_handler.enabled?,
           :temperature => @temperature_retriever.temperature
         }
       else
-        request.websocket do |ws|
-          ws.onopen do
-            @message_hub.add_subscriber(ws)
-          end
-          ws.onclose do
-            @message_hub.remove_subscriber(ws)
-          end
+        ws = Faye::WebSocket.new(request.env)
+
+        ws.on :open do
+          @message_hub.add_subscriber(ws)
         end
+
+        ws.on :close do
+          @message_hub.remove_subscriber(ws)
+        end
+
+        ws.rack_response
       end
     end
 
