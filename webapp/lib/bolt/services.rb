@@ -31,9 +31,10 @@ module Bolt
   end
 
   class ScheduledTemperatureRetriever
-    def initialize(temperature_retriever, message_hub)
+    def initialize(temperature_retriever, message_hub, temperature_repository)
       @temperature_retriever = temperature_retriever
       @message_hub = message_hub
+      @repository = temperature_repository
       @scheduler = Rufus::Scheduler.new
     end
 
@@ -41,6 +42,7 @@ module Bolt
       @scheduler.every '1m' do
         temperature = @temperature_retriever.temperature
         @message_hub.broadcast({ :type => :temperature, :value => temperature })
+        @repository.store(Time.now().to_i, temperature)
       end
     end
   end

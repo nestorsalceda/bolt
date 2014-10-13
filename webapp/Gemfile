@@ -8,6 +8,8 @@ gem 'sinatra-assetpack', "~> 0.3.3"
 gem "faye-websocket", "~> 0.7.4"
 gem "haml", "~> 4.0.5"
 gem "rufus-scheduler", "~> 3.0.9"
+gem "redis"
+gem "hiredis"
 
 group :development do
   gem "rerun", "~> 0.10.0"

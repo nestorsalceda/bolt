@@ -1,6 +1,7 @@
 require 'json'
 require 'logger'
 require 'serialport'
+require 'redis'
 
 module Bolt
   class Arduino
@@ -41,6 +42,16 @@ module Bolt
     def broadcast(message)
       @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) }
       @logger.info "Broadcasted #{message} to #{@subscribers.length} subscribers"
+    end
+  end
+
+  class RedisClient
+    def initialize(url)
+      @redis = Redis.new(:url => url, :driver => :hiredis)
+    end
+
+    def zadd(key, score, member)
+      @redis.zadd(key, score, member)
     end
   end
 end

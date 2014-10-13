@@ -14,8 +14,9 @@ module Bolt
       @lights_handler = factory.create_lights_handler
       @temperature_retriever = factory.create_temperature_retriever
 
-      @message_hub = MessageHub.new
-      @scheduled_temperature_retriever = ScheduledTemperatureRetriever.new(@temperature_retriever, @message_hub)
+      @message_hub = factory.create_message_hub
+
+      @scheduled_temperature_retriever = factory.create_scheduled_temperature_retriever
       @scheduled_temperature_retriever.schedule_and_notify
     end
 
