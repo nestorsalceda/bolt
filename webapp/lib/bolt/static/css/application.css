@@ -1,15 +1,5 @@
-#main {
-  height: 100%;
-}
-
-#main > section {
-  height: 40rem;
-  margin: auto;
-  position: absolute;
-  top: 0px;
-  bottom: 0px;
-  right: 0px;
-  left: 0px;
+body {
+  padding-top: 20px;
 }
 
 .large-switch-panel {
@@ -18,5 +8,5 @@
 }
 
 #temperature {
-  font-size: 36px;
+  font-size: 32px;
 }

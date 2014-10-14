@@ -1,23 +1,31 @@
 %section#main
-  %section.container.form-horizontal
+  %section.container
     .row
-      .col-lg-4.col-lg-offset-4.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-10.col-xs-offset-1
+      .col-md-12
+        .panel.panel-default
+          .panel-heading
+            %h3.panel-title
+              Temperaturas de hoy
+          .panel-body.text-center
+            #temperature-graph
+    .row
+      .col-md-4.col-xs-6
         .panel.panel-default
           .panel-heading
             %h3.panel-title
               Luz del escritorio
           .panel-body.text-center.large-switch-panel
             %input.input-lg{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
-    .row
-      .col-lg-4.col-lg-offset-4.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-10.col-xs-offset-1
+
+      .col-md-4.col-xs-6
         .panel.panel-default
           .panel-heading
             %h3.panel-title
               Color de la luz
           .panel-body.text-center
             %input.input-lg{ :id => 'color-selector', :type => 'color' }
-    .row
-      .col-lg-4.col-lg-offset-4.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-10.col-xs-offset-1
+
+      .col-md-4.col-xs-12
         .panel.panel-default
           .panel-heading
             %h3.panel-title
@@ -25,20 +33,6 @@
           .panel-body.text-center
             %span{ :id => 'temperature' }
               = temperature
-    .row
-      .col-lg-8.col-lg-offset-2.col-md-6.col-md-offset-3.col-sm-8.col-sm-offset-2.col-xs-10.col-xs-offset-1
-        .panel.panel-default
-          .panel-heading
-            %h3.panel-title
-              Temperaturas de hoy
-          .panel-body.text-center
-            #temperature-graph
-
-
-
-
-
-
 :javascript
   $(function() {
     var setSwitchState = function(state) {
@@ -66,6 +60,7 @@
       data: [],
       xkey: 'timestamp',
       ykeys: ['temperature'],
+      xLabels: '5min',
       labels: ['Temperatura'],
       dateFormat: function (x) {
         console.log(x);
@@ -81,7 +76,7 @@
       $.getJSON('/temperatures/today', function(data) {
         graph.setData(data);
       })
-    }, 10000)
+    },150000)
 
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
     ws.onmessage = function(event) {
