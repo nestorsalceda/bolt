@@ -23,7 +23,6 @@ module Bolt
   end
 
   class MessageHub
-
     def initialize
       @subscribers = []
       @logger = Logger.new(STDERR)

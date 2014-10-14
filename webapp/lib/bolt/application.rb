@@ -11,13 +11,16 @@ module Bolt
       super(app)
       factory = Factory.new
 
-      @lights_handler = factory.create_lights_handler
-      @temperature_retriever = factory.create_temperature_retriever
+      @scheduled_temperature_retriever = factory.scheduled_temperature_retriever
+      @scheduled_temperature_retriever.start
 
-      @message_hub = factory.create_message_hub
+      @scheduled_temperature_registerer = factory.scheduled_temperature_registerer
+      @scheduled_temperature_registerer.start
 
-      @scheduled_temperature_retriever = factory.create_scheduled_temperature_retriever
-      @scheduled_temperature_retriever.schedule_and_notify
+      @lights_handler = factory.lights_handler
+      @temperature_retriever = factory.temperature_retriever
+      @message_hub = factory.message_hub
+      @temperature_repository = factory.temperature_repository
     end
 
     get '/' do
