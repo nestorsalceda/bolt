@@ -11,13 +11,13 @@ module Bolt
     end
 
     def message_hub
-      @message_hub unless @message_hub.nil?
+      return @message_hub unless @message_hub.nil?
 
       @message_hub = MessageHub.new
     end
 
     def temperature_repository
-      @temperature_repository unless @temperature_repository.nil?
+      return @temperature_repository unless @temperature_repository.nil?
 
       @temperature_repository = TemperatureRepository.new(RedisClient.new('redis://localhost:6379'))
     end
@@ -33,7 +33,7 @@ module Bolt
     private
 
     def arduino
-      @arduino unless @arduino.nil?
+      return @arduino unless @arduino.nil?
 
       device = ENV.fetch('ARDUINO_DEVICE', '/dev/ttyACM0')
       @arduino = Arduino.new(device)
