@@ -21,7 +21,7 @@ module Bolt
 
       result = @repository.find_today_temperatures
 
-      expect(result[0]).to eq({:temperature => 21.67, :timestamp => Time.new(2014, 10, 14, 19, 27, 13)})
+      expect(result[0]).to eq({:temperature => 21.67, :timestamp => 1413307633})
     end
 
     def stubbed_temperatures

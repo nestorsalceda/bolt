@@ -2,6 +2,7 @@ require 'sinatra/base'
 require 'faye/websocket'
 require 'sinatra/assetpack'
 require 'haml'
+require 'json'
 
 module Bolt
   class Application < Sinatra::Base
@@ -61,6 +62,12 @@ module Bolt
       @message_hub.broadcast({ :type => :lights, :enabled => false })
     end
 
+    get '/temperatures/today' do
+      content_type :json
+
+      @temperature_repository.find_today_temperatures.to_json
+    end
+
     assets do
       serve '/js', :from => 'static/js'
       serve '/css', :from => 'static/css'
@@ -74,12 +81,15 @@ module Bolt
         '/js/vendor/jquery.js',
         '/js/bootstrap.js',
         '/js/bootstrap-switch.js',
+        '/js/raphael-min.js',
+        '/js/morris.js',
       ]
 
       css :application, [
         '/css/bootstrap.css',
         '/css/bootstrap-theme.css',
         '/css/bootstrap-switch.css',
+        '/css/morris.css',
         '/css/application.css'
       ]
 

@@ -15,7 +15,7 @@ module Bolt
       key = Date.today.to_time.to_i
       @redis.zrangebyscore(:temperatures, key, '+inf').map do |element|
         time, temperature = element.split('_')
-        {:temperature => temperature.to_f, :timestamp => Time.at(time.to_i)}
+        {:temperature => temperature.to_f, :timestamp => time.to_i}
       end
     end
   end
