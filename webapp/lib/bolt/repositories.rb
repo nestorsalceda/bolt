@@ -1,3 +1,5 @@
+require 'date'
+
 module Bolt
   class TemperatureRepository
     def initialize(redis_client)
@@ -7,6 +9,14 @@ module Bolt
     def store(timestamp, temperature)
       unix_timestamp = timestamp.to_i
       @redis.zadd(:temperatures, unix_timestamp, "#{unix_timestamp}_#{temperature}")
+    end
+
+    def find_today_temperatures
+      key = Date.today.to_time.to_i
+      @redis.zrangebyscore(:temperatures, key, '+inf').map do |element|
+        time, temperature = element.split('_')
+        {:temperature => temperature.to_f, :timestamp => Time.at(time.to_i)}
+      end
     end
   end
 end

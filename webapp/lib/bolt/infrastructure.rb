@@ -53,5 +53,9 @@ module Bolt
     def zadd(key, score, member)
       @redis.zadd(key, score, member)
     end
+
+    def zrangebyscore(key, min, max, options={})
+      @redis.zrangebyscore(key, min, max, options)
+    end
   end
 end

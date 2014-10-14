@@ -15,5 +15,17 @@ module Bolt
 
       @repository.store(timestamp, temperature)
     end
+
+    it 'finds temperatures for today' do
+      expect(@redis_client).to receive(:zrangebyscore).with(:temperatures, Date.today.to_time.to_i, '+inf').and_return(stubbed_temperatures)
+
+      result = @repository.find_today_temperatures
+
+      expect(result[0]).to eq({:temperature => 21.67, :timestamp => Time.new(2014, 10, 14, 19, 27, 13)})
+    end
+
+    def stubbed_temperatures
+      ["1413307633_21.67", "1413307693_21.56", "1413307753_21.56"]
+    end
   end
 end
