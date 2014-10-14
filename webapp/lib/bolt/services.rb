@@ -53,7 +53,7 @@ module Bolt
     end
 
     def start
-      @scheduler.cron '*/5 * * * *' do
+      @scheduler.every '5m' do
         temperature = @temperature_retriever.temperature
         @repository.store(Time.now().to_i, temperature)
       end
