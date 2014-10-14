@@ -5,7 +5,8 @@ module Bolt
     end
 
     def store(timestamp, temperature)
-      @redis.zadd(:temperatures, timestamp, temperature)
+      unix_timestamp = timestamp.to_i
+      @redis.zadd(:temperatures, unix_timestamp, "#{unix_timestamp}_#{temperature}")
     end
   end
 end
