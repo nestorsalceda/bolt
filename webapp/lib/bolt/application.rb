@@ -23,7 +23,8 @@ module Bolt
       unless Faye::WebSocket.websocket?(request.env)
         haml :index, layout: :layout, locals: {
           :enabled =>  @lights_handler.enabled?,
-          :temperature => @temperature_retriever.temperature
+          :temperature => @temperature_retriever.temperature,
+          :today_temperatures => JSON::dump(@temperature_repository.find_today_temperatures)
         }
       else
         ws = Faye::WebSocket.new(request.env)

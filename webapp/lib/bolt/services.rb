@@ -68,7 +68,7 @@ module Bolt
     end
 
     def start
-      @scheduler.every '15m', :first_in => '3s' do
+      @scheduler.every '15m', :first_in => '10s' do
         temperatures = @repository.find_today_temperatures
         @message_hub.broadcast({ :type => :today_temperatures, :value => temperatures })
       end
