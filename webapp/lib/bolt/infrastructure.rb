@@ -39,7 +39,10 @@ module Bolt
     end
 
     def broadcast(message)
-      @subscribers.each { |subscriber| subscriber.send(JSON::dump(message)) }
+      message[:timestamp] = Time.now().to_i
+      message = JSON::dump(message)
+
+      @subscribers.each { |subscriber| subscriber.send(message) }
       @logger.info "Broadcasted #{message} to #{@subscribers.length} subscribers"
     end
   end

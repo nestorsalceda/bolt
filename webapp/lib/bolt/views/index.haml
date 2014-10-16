@@ -55,27 +55,19 @@
       setSwitchState(true);
     });
 
+    var graphDataIsFresh = true;
+    var graphData = [];
     var graph = Morris.Line({
       element: 'temperature-graph',
-      data: [],
+      data: graphData,
       xkey: 'timestamp',
       ykeys: ['temperature'],
-      xLabels: '5min',
       labels: ['Temperatura'],
+      xLabels: "15min",
       dateFormat: function (x) {
         return new Date(x * 1000).toLocaleFormat();
       }
     });
-
-    $.getJSON('/temperatures/today', function(data) {
-      graph.setData(data);
-    })
-
-    setInterval(function() {
-      $.getJSON('/temperatures/today', function(data) {
-        graph.setData(data);
-      })
-    },150000)
 
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
     ws.onmessage = function(event) {
@@ -87,6 +79,17 @@
           break;
         case 'temperature':
           $('#temperature').text(message.value);
+          if (!graphDataIsFresh) {
+            graphData.pop();
+          }
+          graphData.push({temperature: parseFloat(message.value), timestamp: parseInt(message.timestamp)});
+          graphDataIsFresh = false;
+          graph.setData(graphData);
+          break;
+        case 'today_temperatures':
+          graphData = message.value;
+          graphDataIsFresh = true;
+          graph.setData(graphData);
           break;
       }
     };

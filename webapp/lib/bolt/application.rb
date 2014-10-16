@@ -10,18 +10,13 @@ module Bolt
 
     def initialize(app = nil)
       super(app)
-      factory = Factory.new
+      @factory = Factory.new
 
-      @scheduled_temperature_retriever = factory.scheduled_temperature_retriever
-      @scheduled_temperature_retriever.start
-
-      @scheduled_temperature_registerer = factory.scheduled_temperature_registerer
-      @scheduled_temperature_registerer.start
-
-      @lights_handler = factory.lights_handler
-      @temperature_retriever = factory.temperature_retriever
-      @message_hub = factory.message_hub
-      @temperature_repository = factory.temperature_repository
+      @lights_handler = @factory.lights_handler
+      @temperature_retriever = @factory.temperature_retriever
+      @message_hub = @factory.message_hub
+      @temperature_repository = @factory.temperature_repository
+      start_background_tasks
     end
 
     get '/' do
@@ -62,12 +57,6 @@ module Bolt
       @message_hub.broadcast({ :type => :lights, :enabled => false })
     end
 
-    get '/temperatures/today' do
-      content_type :json
-
-      @temperature_repository.find_today_temperatures.to_json
-    end
-
     assets do
       serve '/js', :from => 'static/js'
       serve '/css', :from => 'static/css'
@@ -96,5 +85,20 @@ module Bolt
       js_compression :jsmin
       css_compression :sass
     end
+
+    private
+
+    def start_background_tasks
+      @scheduled_temperature_registerer = @factory.scheduled_temperature_registerer
+      @scheduled_temperature_registerer.start
+
+      @scheduled_temperature_notifier = @factory.scheduled_temperature_notifier
+      @scheduled_temperature_notifier.start
+
+      @scheduled_temperatures_for_today_notifier = @factory.scheduled_temperatures_for_today_notifier
+      @scheduled_temperatures_for_today_notifier.start
+    end
+
+
   end
 end

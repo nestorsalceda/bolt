@@ -22,12 +22,16 @@ module Bolt
       @temperature_repository = TemperatureRepository.new(RedisClient.new('redis://localhost:6379'))
     end
 
-    def scheduled_temperature_retriever
-      ScheduledTemperatureRetriever.new(temperature_retriever, message_hub)
+    def scheduled_temperature_notifier
+      ScheduledTemperatureNotifier.new(temperature_retriever, message_hub)
     end
 
     def scheduled_temperature_registerer
       ScheduledTemperatureRegisterer.new(temperature_retriever, temperature_repository)
+    end
+
+    def scheduled_temperatures_for_today_notifier
+      ScheduledTemperaturesForTodayNotifier.new(temperature_repository, message_hub)
     end
 
     private
