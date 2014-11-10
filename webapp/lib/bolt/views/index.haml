@@ -1,38 +1,43 @@
-%section#main
-  %section.container
-    .row
-      .col-md-12
-        .panel.panel-default
-          .panel-heading
-            %h3.panel-title
-              Temperaturas de hoy
-          .panel-body.text-center
-            #temperature-graph
-    .row
-      .col-md-4.col-xs-6
-        .panel.panel-default
-          .panel-heading
-            %h3.panel-title
-              Luz del escritorio
-          .panel-body.text-center.large-switch-panel
-            %input.input-lg{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
+.row
+  %section.col-md-12
+    .box.box-info
+      .box-header
+        %i.fa.fa-line-chart
+        %h3.box-title
+          Temperaturas de hoy
+      .box-body.chart-responsive
+        #temperature-graph
 
-      .col-md-4.col-xs-6
-        .panel.panel-default
-          .panel-heading
-            %h3.panel-title
-              Color de la luz
-          .panel-body.text-center
-            %input.input-lg{ :id => 'color-selector', :type => 'color' }
+.row
+  %section.col-md-4.col-xs-6
+    .box.box-primary
+      .box-header
+        %i.fa.fa-lightbulb-o
+        %h3.box-title
+          Luz del escritorio
+      .box-body.text-center
+        .form-group
+          .checkbox
+            %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
 
-      .col-md-4.col-xs-12
-        .panel.panel-default
-          .panel-heading
-            %h3.panel-title
-              Temperatura
-          .panel-body.text-center
-            %span{ :id => 'temperature' }
-              = temperature
+  %section.col-md-4.col-xs-6
+    .box.box-primary
+      .box-header
+        %i.fa.fa-cogs
+        %h3.box-title
+          Color de la luz
+      .box-body.text-center
+        %input.input-lg{ :id => 'color-selector', :type => 'color' }
+
+  %section.col-md-4.col-xs-12
+    .box.box-info
+      .box-header
+        %i.fa.fa-sun-o
+        %h3.box-title
+          Temperatura interior
+      .box-body.text-center
+        %span{ :id => 'temperature' }
+          = temperature
 :javascript
   $(function() {
     var setSwitchState = function(state) {

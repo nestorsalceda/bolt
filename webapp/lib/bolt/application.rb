@@ -71,16 +71,18 @@ module Bolt
         '/js/vendor/jquery.js',
         '/js/bootstrap.js',
         '/js/bootstrap-switch.js',
+        '/js/theme/app.js',
         '/js/raphael-min.js',
         '/js/morris.js',
       ]
 
       css :application, [
         '/css/bootstrap.css',
-        '/css/bootstrap-theme.css',
+        '/css/font-awesome.css',
         '/css/bootstrap-switch.css',
+        '/css/theme/AdminLTE.css',
         '/css/morris.css',
-        '/css/application.css'
+        '/css/application.css',
       ]
 
       js_compression :jsmin

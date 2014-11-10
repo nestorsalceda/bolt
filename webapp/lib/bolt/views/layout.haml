@@ -13,8 +13,42 @@
 
     = css :application
     = js :modernizr
-  %body
+  %body.skin-black.fixed
     = js :application
 
-    = yield
+    %header.header
+      %a.logo
+        Bolt
+
+      %nav.navbar.nabvar-static-top
+        %a.navbar-btn.sidebar-toggle{:href => '#', 'data-toggle' => 'offcanvas'}
+          %span.sr-only
+            Toggle navigation
+          %span.icon-bar
+          %span.icon-bar
+          %span.icon-bar
+
+    .wrapper.row-offcanvas.row-offcanvas-left
+      %aside.left-side.sidebar-offcanvas
+        %section.sidebar
+          %ul.sidebar-menu
+            %li.active
+              %a
+                %i.fa.fa-dashboard
+                %span
+                  Dashboard
+
+      %aside.right-side
+        %section.content-header
+          %h1
+            Dashboard
+            %small
+              Control panel
+          %ol.breadcrumb
+            %li
+              %i.fa.fa-dashboard
+              Home
+
+        %section.content
+          = yield
 
