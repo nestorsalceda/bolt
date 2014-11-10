@@ -13,14 +13,14 @@
 
     = css :application
     = js :modernizr
-  %body.skin-black.fixed
+  %body.skin-blue.fixed
     = js :application
 
     %header.header
-      %a.logo
+      %a.logo{:href => '/'}
         Bolt
 
-      %nav.navbar.nabvar-static-top
+      %nav.navbar.navbar-static-top
         %a.navbar-btn.sidebar-toggle{:href => '#', 'data-toggle' => 'offcanvas'}
           %span.sr-only
             Toggle navigation
