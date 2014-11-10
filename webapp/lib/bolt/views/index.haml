@@ -16,9 +16,13 @@
         %h3.box-title
           Luz del escritorio
       .box-body.text-center
-        .form-group
-          .checkbox
-            %input{ :id => 'light-switch', :type => 'checkbox', 'checked' => enabled ? true : nil }
+        .btn-group.btn-group-lg{ 'data-toggle' => 'buttons' }
+          %label.btn{ :class => enabled ? "btn-primary active" : "btn-default" }
+            %input.simple{ :name => 'state', :id => 'on', :autocomplete => 'off', :value => 'on', :type => 'radio'}
+            ON
+          %label.btn{ :class => enabled ? "btn-default" : "btn-primary active" }
+            %input.simple{ :name => 'state', :id => 'off', :autocomplete => 'off', :value => 'off', :type => 'radio'}
+            OFF
 
   %section.col-md-4.col-xs-6
     .box.box-primary
@@ -38,16 +42,23 @@
       .box-body.text-center
         %span{ :id => 'temperature' }
           = temperature
+
 :javascript
   $(function() {
     var setSwitchState = function(state) {
-      $('#light-switch').bootstrapSwitch('state', state, true);
+      var $this = $('input[name="state"][value="' + state + '"]');
+      var $parent = $this.parent();
+
+      $parent.siblings().removeClass('btn-primary').addClass('btn-default');
+      $parent.removeClass('btn-default').addClass('btn-primary');
     };
 
-    $('#light-switch').bootstrapSwitch({size: 'large'});
+    $('input[name="state"]').on('change', function() {
+      var $this = $(this);
 
-    $('#light-switch').on('switchChange.bootstrapSwitch', function(event, checked) {
-      if (checked) {
+      setSwitchState($this.val());
+
+      if ($this.val() == 'on') {
         $.post('/rgb');
       }
       else {
