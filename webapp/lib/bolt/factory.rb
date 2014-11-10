@@ -39,8 +39,18 @@ module Bolt
     def arduino
       return @arduino unless @arduino.nil?
 
-      device = ENV.fetch('ARDUINO_DEVICE', '/dev/ttyACM0')
-      @arduino = Arduino.new(device)
+      if ENV['DEBUG'].nil?
+        device = ENV.fetch('ARDUINO_DEVICE', '/dev/ttyACM0')
+        @arduino = Arduino.new(device)
+      else
+        @arduino = FakeArduino.new
+      end
+    end
+
+    class FakeArduino
+      def send(command)
+        return '0'
+      end
     end
   end
 end
