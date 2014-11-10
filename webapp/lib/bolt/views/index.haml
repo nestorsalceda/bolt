@@ -46,7 +46,11 @@
 :javascript
   $(function() {
     var setSwitchState = function(state) {
-      var $this = $('input[name="state"][value="' + state + '"]');
+      if (state == 'on' || state == true) {
+        var $this = $('input[name="state"][value="on"]');
+      }else {
+        var $this = $('input[name="state"][value="off"]');
+      }
       var $parent = $this.parent();
 
       $parent.siblings().removeClass('btn-primary').addClass('btn-default');
