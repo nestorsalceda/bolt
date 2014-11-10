@@ -70,7 +70,6 @@ module Bolt
       js :application, [
         '/js/vendor/jquery.js',
         '/js/bootstrap.js',
-        '/js/bootstrap-switch.js',
         '/js/theme/app.js',
         '/js/raphael-min.js',
         '/js/morris.js',
@@ -79,7 +78,6 @@ module Bolt
       css :application, [
         '/css/bootstrap.css',
         '/css/font-awesome.css',
-        '/css/bootstrap-switch.css',
         '/css/theme/AdminLTE.css',
         '/css/morris.css',
         '/css/application.css',
