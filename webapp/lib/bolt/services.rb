@@ -55,7 +55,7 @@ module Bolt
     def start
       @scheduler.every '15m', :first_in => :now do
         temperature = @temperature_retriever.temperature
-        @repository.store(Time.now().to_i, temperature)
+        @repository.put(temperature)
       end
     end
   end

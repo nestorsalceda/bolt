@@ -1,23 +1,19 @@
 module Bolt
   describe TemperatureRepository do
     before(:each) do
-      @redis_client = instance_double('RedisClient')
-      @repository = TemperatureRepository.new(@redis_client)
+      @influxdb_client = instance_double('InfluxDBClient')
+      @repository = TemperatureRepository.new(@influxdb_client)
     end
 
     it 'stores a temperature in database' do
-      timestamp = Time.new()
-      unix_timestamp = timestamp.to_i
       temperature = 22.4
+      expect(@influxdb_client).to receive(:write_point).with("temperatures", {:value => temperature})
 
-      expect(@redis_client).to receive(:zadd).with(:temperatures, unix_timestamp, "#{unix_timestamp}_#{temperature}")
-
-
-      @repository.store(timestamp, temperature)
+      @repository.put(temperature)
     end
 
     it 'finds temperatures for today' do
-      expect(@redis_client).to receive(:zrangebyscore).with(:temperatures, Date.today.to_time.to_i, '+inf').and_return(stubbed_temperatures)
+      expect(@influxdb_client).to receive(:query).with("select * from temperatures where time > #{Date.today}").and_return(stubbed_temperatures)
 
       result = @repository.find_today_temperatures
 
@@ -25,7 +21,7 @@ module Bolt
     end
 
     def stubbed_temperatures
-      ["1413307633_21.67", "1413307693_21.56", "1413307753_21.56"]
+      [{"time" => 1413307633, "value" => 21.67}, {"time" => 1413307693, "value" => 21.56}, {"time" => 1413307753, "value" => 21.56}]
     end
   end
 end

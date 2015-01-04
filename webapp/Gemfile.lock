@@ -22,9 +22,11 @@ GEM
       thor (~> 0.19.1)
     haml (4.0.5)
       tilt
-    hiredis (0.5.2)
     hitimes (1.2.2)
+    influxdb (0.1.8)
+      json
     jsmin (1.0.1)
+    json (1.8.1)
     listen (2.7.11)
       celluloid (>= 0.15.2)
       rb-fsevent (>= 0.9.3)
@@ -39,7 +41,6 @@ GEM
     rb-fsevent (0.9.4)
     rb-inotify (0.9.5)
       ffi (>= 0.5.0)
-    redis (3.1.0)
     rerun (0.10.0)
       listen (~> 2.7, >= 2.7.3)
     rspec (3.0.0)
@@ -83,9 +84,8 @@ DEPENDENCIES
   faye-websocket (~> 0.7.4)
   foreman
   haml (~> 4.0.5)
-  hiredis
+  influxdb
   puma
-  redis
   rerun (~> 0.10.0)
   rspec (~> 3.0.0)
   rufus-scheduler (~> 3.0.9)

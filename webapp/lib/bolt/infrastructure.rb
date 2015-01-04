@@ -1,7 +1,7 @@
 require 'json'
 require 'logger'
 require 'serialport'
-require 'redis'
+require 'influxdb'
 
 module Bolt
   class Arduino
@@ -47,17 +47,21 @@ module Bolt
     end
   end
 
-  class RedisClient
-    def initialize(url)
-      @redis = Redis.new(:url => url, :driver => :hiredis)
+  class InfluxDBClient
+    def initialize(database)
+      @influxdb = InfluxDB::Client.new(database)
     end
 
-    def zadd(key, score, member)
-      @redis.zadd(key, score, member)
+    def write_point(name, data)
+      @influxdb.write_point(name, data)
     end
 
-    def zrangebyscore(key, min, max, options={})
-      @redis.zrangebyscore(key, min, max, options)
+    def query(criteria)
+      result = []
+      @influxdb.query(criteria) do |name, points|
+        result = points
+      end
+      result
     end
   end
 end
