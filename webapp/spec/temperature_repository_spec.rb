@@ -13,7 +13,7 @@ module Bolt
     end
 
     it 'finds temperatures for today' do
-      expect(@influxdb_client).to receive(:query).with("select * from temperatures where time > #{Date.today}").and_return(stubbed_temperatures)
+      expect(@influxdb_client).to receive(:query).with("select * from temperatures where time > '#{Date.today}'").and_return(stubbed_temperatures)
 
       result = @repository.find_today_temperatures
 
@@ -22,7 +22,7 @@ module Bolt
 
     it 'finds mean temperature for today' do
       value = 21.03
-      expect(@influxdb_client).to receive(:query).with("select mean(value) from temperatures where time > #{Date.today}").and_return([{"mean" => value}])
+      expect(@influxdb_client).to receive(:query).with("select mean(value) from temperatures where time > '#{Date.today}'").and_return([{"mean" => value}])
 
       result = @repository.find_today_mean_temperature
 
@@ -31,15 +31,16 @@ module Bolt
 
     it 'finds minimum temperature for today' do
       value = 21.03
-      expect(@influxdb_client).to receive(:query).with("select min(value) from temperatures where time > #{Date.today}").and_return([{"min" => value}])
+      expect(@influxdb_client).to receive(:query).with("select min(value) from temperatures where time > '#{Date.today}'").and_return([{"min" => value}])
 
       result = @repository.find_today_minimum_temperature
 
       expect(result).to eq(value)
     end
+
     it 'finds maximum temperature for today' do
       value = 21.03
-      expect(@influxdb_client).to receive(:query).with("select max(value) from temperatures where time > #{Date.today}").and_return([{"max" => value}])
+      expect(@influxdb_client).to receive(:query).with("select max(value) from temperatures where time > '#{Date.today}'").and_return([{"max" => value}])
 
       result = @repository.find_today_maximum_temperature
 
