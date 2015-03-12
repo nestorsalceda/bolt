@@ -10,10 +10,10 @@ html.no-js lang="es"
     meta name="author" content=""
     meta name="viewport" content="width=device-width, initial-scale=1"
 
-    = css :application
-    = js :modernizr
+    == css :application
+    == js :modernizr
   body.skin-blue.fixed
-    = js :application
+    == js :application
 
     header.main-header
       a.logo href='/' Bolt
@@ -44,5 +44,5 @@ html.no-js lang="es"
               i.fa.fa-dashboard Home
 
         section.content
-          = yield
+          == yield
 

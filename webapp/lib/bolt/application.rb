@@ -21,10 +21,6 @@ module Bolt
       start_background_tasks
     end
 
-    configure do
-      Slim::Engine.set_options use_html_safe: true
-    end
-
     configure :development do
       use BetterErrors::Middleware
       BetterErrors.application_root = __dir__
