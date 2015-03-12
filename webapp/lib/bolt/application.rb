@@ -82,6 +82,7 @@ module Bolt
       js :application, [
         '/js/vendor/jquery.js',
         '/js/bootstrap.js',
+        '/js/jquery.slimscroll.js',
         '/js/theme/app.js',
         '/js/raphael-min.js',
         '/js/morris.js',
@@ -91,6 +92,7 @@ module Bolt
         '/css/bootstrap.css',
         '/css/font-awesome.css',
         '/css/theme/AdminLTE.css',
+        '/css/theme/skin-blue.css',
         '/css/morris.css',
         '/css/application.css',
       ]

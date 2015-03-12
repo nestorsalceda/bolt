@@ -16,12 +16,12 @@
   %body.skin-blue.fixed
     = js :application
 
-    %header.header
+    %header.main-header
       %a.logo{:href => '/'}
         Bolt
 
       %nav.navbar.navbar-static-top
-        %a.navbar-btn.sidebar-toggle{:href => '#', 'data-toggle' => 'offcanvas'}
+        %a.sidebar-toggle{:href => '#', 'data-toggle' => 'offcanvas'}
           %span.sr-only
             Toggle navigation
           %span.icon-bar
@@ -31,6 +31,7 @@
     .wrapper.row-offcanvas.row-offcanvas-left
       %aside.left-side.sidebar-offcanvas
         %section.sidebar
+          .user-panel
           %ul.sidebar-menu
             %li.active
               %a
