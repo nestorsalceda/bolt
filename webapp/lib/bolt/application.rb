@@ -3,6 +3,7 @@ require 'faye/websocket'
 require 'sinatra/assetpack'
 require 'haml'
 require 'json'
+require 'better_errors' if development?
 
 module Bolt
   class Application < Sinatra::Base
@@ -17,6 +18,11 @@ module Bolt
       @message_hub = @factory.message_hub
       @temperature_repository = @factory.temperature_repository
       start_background_tasks
+    end
+
+    configure :development do
+      use BetterErrors::Middleware
+      BetterErrors.application_root = __dir__
     end
 
     get '/' do
