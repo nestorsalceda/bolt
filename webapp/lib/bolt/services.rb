@@ -70,7 +70,10 @@ module Bolt
     def start
       @scheduler.every '15m', :first_in => '10s' do
         temperatures = @repository.find_today_temperatures
-        @message_hub.broadcast({ :type => :today_temperatures, :value => temperatures })
+        mean_temperature = @repository.find_today_mean_temperature
+        max_temperature = @repository.find_today_maximum_temperature
+        min_temperature = @repository.find_today_minimum_temperature
+        @message_hub.broadcast({ :type => :today_temperatures, :value => temperatures, :mean => mean_temperature, :maximum => max_temperature, :minimum => min_temperature })
       end
     end
   end

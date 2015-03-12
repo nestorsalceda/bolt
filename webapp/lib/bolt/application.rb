@@ -24,7 +24,10 @@ module Bolt
         haml :index, layout: :layout, locals: {
           :enabled =>  @lights_handler.enabled?,
           :temperature => @temperature_retriever.temperature,
-          :today_temperatures => JSON::dump(@temperature_repository.find_today_temperatures)
+          :today_temperatures => JSON::dump(@temperature_repository.find_today_temperatures),
+          :mean_temperature => @temperature_repository.find_today_mean_temperature,
+          :minimum_temperature => @temperature_repository.find_today_minimum_temperature,
+          :maximum_temperature => @temperature_repository.find_today_maximum_temperature
         }
       else
         ws = Faye::WebSocket.new(request.env)
