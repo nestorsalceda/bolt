@@ -4,6 +4,7 @@ require 'sinatra/assetpack'
 require 'haml'
 require 'json'
 require 'better_errors' if development?
+require 'sinatra/reloader' if development?
 
 module Bolt
   class Application < Sinatra::Base
@@ -23,6 +24,8 @@ module Bolt
     configure :development do
       use BetterErrors::Middleware
       BetterErrors.application_root = __dir__
+
+      register Sinatra::Reloader
     end
 
     get '/' do
