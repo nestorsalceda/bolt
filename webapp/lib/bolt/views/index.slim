@@ -1,49 +1,43 @@
 .row
-  %section.col-md-12
+  section.col-md-12
     .box.box-info
       .box-header
-        %i.fa.fa-line-chart
-        %h3.box-title
-          Temperaturas de hoy
+        i.fa.fa-line-chart
+        h3.box-title Temperaturas de hoy
       .box-body.chart-responsive
         #temperature-graph
 
 .row
-  %section.col-md-4.col-xs-6
+  section.col-md-4.col-xs-6
     .box.box-primary
       .box-header
-        %i.fa.fa-lightbulb-o
-        %h3.box-title
-          Luz del escritorio
+        i.fa.fa-lightbulb-o
+        h3.box-title Luz del escritorio
       .box-body.text-center
-        .btn-group.btn-group-lg{ 'data-toggle' => 'buttons' }
-          %label.btn{ :class => enabled ? "btn-primary active" : "btn-default" }
-            %input.simple{ :name => 'state', :id => 'on', :autocomplete => 'off', :value => 'on', :type => 'radio'}
-            ON
-          %label.btn{ :class => enabled ? "btn-default" : "btn-primary active" }
-            %input.simple{ :name => 'state', :id => 'off', :autocomplete => 'off', :value => 'off', :type => 'radio'}
-            OFF
+        .btn-group.btn-group-lg data-toggle='buttons'
+          label.btn class=(enabled ? "btn-primary active" : "btn-default")
+            input.simple#on name='state' autocomplete='off' value='on' type='radio' ON
+          label.btn class=(enabled ? "btn-default" : "btn-primary active")
+            input.simple#off name='state' autocomplete='off' value='off' type='radio' OFF
 
-  %section.col-md-4.col-xs-6
+  section.col-md-4.col-xs-6
     .box.box-primary
       .box-header
-        %i.fa.fa-cogs
-        %h3.box-title
-          Color de la luz
+        i.fa.fa-cogs
+        h3.box-title Color de la luz
       .box-body.text-center
-        %input.input-lg{ :id => 'color-selector', :type => 'color' }
+        input.input-lg#color-selector type="color"
 
-  %section.col-md-4.col-xs-12
+  section.col-md-4.col-xs-12
     .box.box-info
       .box-header
-        %i.fa.fa-sun-o
-        %h3.box-title
-          Temperatura interior
+        i.fa.fa-sun-o
+        h3.box-title Temperatura interior
       .box-body.text-center
-        %span{ :id => 'temperature' }
+        span#temperature
           = temperature
 
-:javascript
+javascript:
   $(function() {
     var setSwitchState = function(state) {
       if (state == 'on' || state == true) {

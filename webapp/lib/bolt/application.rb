@@ -1,7 +1,7 @@
 require 'sinatra/base'
 require 'faye/websocket'
 require 'sinatra/assetpack'
-require 'haml'
+require 'slim'
 require 'json'
 require 'better_errors' if development?
 require 'sinatra/reloader' if development?
@@ -21,6 +21,10 @@ module Bolt
       start_background_tasks
     end
 
+    configure do
+      Slim::Engine.set_options use_html_safe: true
+    end
+
     configure :development do
       use BetterErrors::Middleware
       BetterErrors.application_root = __dir__
@@ -30,7 +34,7 @@ module Bolt
 
     get '/' do
       unless Faye::WebSocket.websocket?(request.env)
-        haml :index, layout: :layout, locals: {
+        slim :index, layout: :layout, locals: {
           :enabled =>  @lights_handler.enabled?,
           :temperature => @temperature_retriever.temperature,
           :today_temperatures => JSON::dump(@temperature_repository.find_today_temperatures),
@@ -113,7 +117,5 @@ module Bolt
       @scheduled_temperatures_for_today_notifier = @factory.scheduled_temperatures_for_today_notifier
       @scheduled_temperatures_for_today_notifier.start
     end
-
-
   end
 end

@@ -1,0 +1,48 @@
+doctype html
+
+html.no-js lang="es"
+
+  head
+    meta charset="utf-8"
+    title Bolt · Manage desk lights
+    meta name="description" content=""
+    meta name="keywords" content=""
+    meta name="author" content=""
+    meta name="viewport" content="width=device-width, initial-scale=1"
+
+    = css :application
+    = js :modernizr
+  body.skin-blue.fixed
+    = js :application
+
+    header.main-header
+      a.logo href='/' Bolt
+
+      nav.navbar.navbar-static-top
+        a.sidebar-toggle href='#' data-toggle='offcanvas'
+          span.sr-only Toggle navigation
+          span.icon-bar
+          span.icon-bar
+          span.icon-bar
+
+    .wrapper.row-offcanvas.row-offcanvas-left
+      aside.left-side.sidebar-offcanvas
+        section.sidebar
+          .user-panel
+          ul.sidebar-menu
+            li.active
+              a
+                i.fa.fa-dashboard
+                span Dashboard
+
+      aside.right-side
+        section.content-header
+          h1 Dashboard
+            small Control panel
+          ol.breadcrumb
+            li
+              i.fa.fa-dashboard Home
+
+        section.content
+          = yield
+
