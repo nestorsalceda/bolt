@@ -70,7 +70,7 @@ javascript:
     });
 
     var graphDataIsFresh = true;
-    var graphData = #{today_temperatures};
+    var graphData = \#{today_temperatures};
     var graph = Morris.Line({
       element: 'temperature-graph',
       data: graphData,
@@ -79,7 +79,7 @@ javascript:
       labels: ['Temperatura'],
       xLabels: "15min",
       dateFormat: function (x) {
-        return new Date(x * 1000).toLocaleFormat();
+        return new Date(x * 1000).toLocaleString();
       }
     });
 
