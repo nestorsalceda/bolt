@@ -10,7 +10,7 @@ module Bolt
 
     def find_today_temperatures
       @influxdb.query("select * from temperatures where time > '#{Date.today}'")  do |name, results|
-        results.map do |result|
+        return results.map do |result|
           {:temperature => result["value"], :timestamp => result["time"]}
         end
       end
