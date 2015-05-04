@@ -17,15 +17,15 @@ module Bolt
     end
 
     def find_today_mean_temperature
-      @influxdb.query("select mean(value) from temperatures where time > '#{Date.today}'")[0]["mean"]
+      @influxdb.query("select mean(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["mean"]
     end
 
     def find_today_minimum_temperature
-      @influxdb.query("select min(value) from temperatures where time > '#{Date.today}'")[0]["min"]
+      @influxdb.query("select min(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["min"]
     end
 
     def find_today_maximum_temperature
-      @influxdb.query("select max(value) from temperatures where time > '#{Date.today}'")[0]["max"]
+      @influxdb.query("select max(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["max"]
     end
   end
 end
