@@ -19,7 +19,7 @@ module Bolt
     def temperature_repository
       return @temperature_repository unless @temperature_repository.nil?
 
-      @temperature_repository = TemperatureRepository.new(InfluxDBClient.new('bolt'))
+      @temperature_repository = TemperatureRepository.new(InfluxDB::Client.new('bolt', host: 'bolt.local'))
     end
 
     def scheduled_temperature_notifier
