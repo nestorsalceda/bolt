@@ -63,5 +63,9 @@ module Bolt
       end
       result
     end
+
+    def delete_series(series)
+      @influxdb.delete_series(series)
+    end
   end
 end
