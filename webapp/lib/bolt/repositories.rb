@@ -9,23 +9,24 @@ module Bolt
     end
 
     def find_today_temperatures
-      @influxdb.query("select * from temperatures where time > '#{Date.today}'")  do |name, results|
-        return results.map do |result|
-          {:temperature => result["value"], :timestamp => result["time"]}
-        end
+      @influxdb.query("select * from temperatures where time > '#{Date.today}'").map  do |result|
+        {:temperature => result["value"], :timestamp => result["time"]}
       end
     end
 
     def find_today_mean_temperature
-      @influxdb.query("select mean(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["mean"]
+      result = @influxdb.query("select mean(value) from temperatures where time > '#{Date.today}'")
+      return result[0]["mean"] unless result.length == 0
     end
 
     def find_today_minimum_temperature
-      @influxdb.query("select min(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["min"]
+      result = @influxdb.query("select min(value) from temperatures where time > '#{Date.today}'")
+      return result[0]["min"] unless result.length == 0
     end
 
     def find_today_maximum_temperature
-      @influxdb.query("select max(value) from temperatures where time > '#{Date.today}'")["temperatures"][0]["max"]
+      result = @influxdb.query("select max(value) from temperatures where time > '#{Date.today}'")
+      return result[0]["max"] unless result.length == 0
     end
   end
 end
