@@ -10,10 +10,19 @@ html.no-js lang="es"
     meta name="author" content=""
     meta name="viewport" content="width=device-width, initial-scale=1"
 
-    == css :application
-    == js :modernizr
+    link rel='stylesheet' href="/css/bootstrap.css"
+    link rel='stylesheet' href="/css/font-awesome.css"
+    link rel='stylesheet' href="/css/theme/AdminLTE.css"
+    link rel='stylesheet' href="/css/theme/skin-blue.css"
+    link rel='stylesheet' href="/css/application.css"
+    script src='/js/vendor/modernizr.js'
+
   body.skin-blue.fixed
-    == js :application
+    script src='/js/vendor/jquery.js'
+    script src='/js/bootstrap.js'
+    script src='/js/jquery.slimscroll.js'
+    script src='/js/Chart.js'
+    script src='/js/theme/app.js'
 
     header.main-header
       a.logo href='/' Bolt

@@ -1,6 +1,5 @@
 require 'sinatra/base'
 require 'faye/websocket'
-require 'sinatra/assetpack'
 require 'slim'
 require 'json'
 require 'better_errors' if development?
@@ -8,7 +7,7 @@ require 'sinatra/reloader' if development?
 
 module Bolt
   class Application < Sinatra::Base
-    register Sinatra::AssetPack
+    set :public_folder, File.dirname(__FILE__) + '/static'
 
     def initialize(app = nil)
       super(app)
@@ -70,35 +69,6 @@ module Bolt
     post '/disable' do
       @lights_handler.disable
       @message_hub.broadcast({ :type => :lights, :enabled => false })
-    end
-
-    assets do
-      serve '/js', :from => 'static/js'
-      serve '/css', :from => 'static/css'
-      serve '/fonts', :from => 'static/fonts'
-
-      js :modernizr, [
-        '/js/vendor/modernizr.js',
-      ]
-
-      js :application, [
-        '/js/vendor/jquery.js',
-        '/js/bootstrap.js',
-        '/js/jquery.slimscroll.js',
-        '/js/theme/app.js',
-        '/js/Chart.js',
-      ]
-
-      css :application, [
-        '/css/bootstrap.css',
-        '/css/font-awesome.css',
-        '/css/theme/AdminLTE.css',
-        '/css/theme/skin-blue.css',
-        '/css/application.css',
-      ]
-
-      js_compression :jsmin
-      css_compression :sass
     end
 
     private
