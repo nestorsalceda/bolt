@@ -178,8 +178,9 @@
 			onAnimationProgress: function(){},
 
 			// Function - Will fire on animation completion.
-			onAnimationComplete: function(){}
+			onAnimationComplete: function(){},
 
+      barShowLabels: true,
 		}
 	};
 
@@ -1569,7 +1570,9 @@
 
 				}
 				if (this.xLabelRotation > 0){
-					this.endPoint -= Math.sin(toRadians(this.xLabelRotation))*originalLabelWidth + 3;
+          if (this.ctx.barShowLabels) {
+            this.endPoint -= Math.sin(toRadians(this.xLabelRotation))*originalLabelWidth + 3;
+          }
 				}
 			}
 			else{
@@ -1713,7 +1716,9 @@
 					ctx.font = this.font;
 					ctx.textAlign = (isRotated) ? "right" : "center";
 					ctx.textBaseline = (isRotated) ? "middle" : "top";
-					ctx.fillText(label, 0, 0);
+          if(ctx.barShowLabels) {
+            ctx.fillText(label, 0, 0);
+          }
 					ctx.restore();
 				},this);
 
@@ -3079,7 +3084,7 @@
 			helpers.each(this.segments,function(segment){
 				segment.save();
 			});
-			
+
 			this.reflow();
 			this.render();
 		},
