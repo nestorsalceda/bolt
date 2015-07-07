@@ -30,10 +30,12 @@ module Bolt
 
     get '/' do
       unless Faye::WebSocket.websocket?(request.env)
+        today_temperatures = @temperature_repository.find_today_temperatures
         slim :index, layout: :layout, locals: {
           :enabled =>  @lights_handler.enabled?,
           :temperature => @temperature_retriever.temperature,
-          :today_temperatures => JSON::dump(@temperature_repository.find_today_temperatures),
+          :today_timeseries => JSON::dump(today_temperatures.map{|value| value[:timestamp]}),
+          :today_temperatures => JSON::dump(today_temperatures.map{|value| value[:temperature]}),
           :mean_temperature => @temperature_repository.find_today_mean_temperature,
           :minimum_temperature => @temperature_repository.find_today_minimum_temperature,
           :maximum_temperature => @temperature_repository.find_today_maximum_temperature
@@ -84,8 +86,7 @@ module Bolt
         '/js/bootstrap.js',
         '/js/jquery.slimscroll.js',
         '/js/theme/app.js',
-        '/js/raphael-min.js',
-        '/js/morris.js',
+        '/js/Chart.js',
       ]
 
       css :application, [
@@ -93,7 +94,6 @@ module Bolt
         '/css/font-awesome.css',
         '/css/theme/AdminLTE.css',
         '/css/theme/skin-blue.css',
-        '/css/morris.css',
         '/css/application.css',
       ]
 

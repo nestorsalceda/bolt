@@ -1,3 +1,7 @@
 #temperature {
   font-size: 32px;
 }
+
+#temperature-graph {
+  padding-right: 32px;
+}

@@ -4,8 +4,8 @@
       .box-header
         i.fa.fa-line-chart
         h3.box-title Temperaturas de hoy
-      .box-body.chart-responsive
-        #temperature-graph
+      .box-body
+        canvas#temperature-graph height="100%"
 
 .row
   section.col-md-4.col-xs-6
@@ -70,17 +70,32 @@ javascript:
     });
 
     var graphDataIsFresh = true;
-    var graphData = #{{today_temperatures}};
-    var graph = Morris.Line({
-      element: 'temperature-graph',
-      data: graphData,
-      xkey: 'timestamp',
-      ykeys: ['temperature'],
-      labels: ['Temperatura'],
-      xLabels: "15min",
-      dateFormat: function (x) {
-        return new Date(x * 1000).toLocaleString();
-      }
+    var graphData = {
+      labels: #{{today_timeseries}}.map(function(x) {
+        return new Date(x * 1000).toLocaleTimeString()
+      }).reverse(),
+      datasets: [
+      {
+        label: "Temperatura interior",
+        fillColor: "rgba(151,187,205,0.2)",
+        strokeColor: "rgba(151,187,205,1)",
+        pointColor: "rgba(151,187,205,1)",
+        pointStrokeColor: "#fff",
+        pointHighlightFill: "#fff",
+        pointHighlightStroke: "rgba(151,187,205,1)",
+        data: #{{today_temperatures}}.reverse()
+      }]
+    };
+    var context = document.getElementById("temperature-graph").getContext("2d");
+    var graph = new Chart(context).Line(graphData, {
+      responsive: true,
+      scaleShowVerticalLines: false,
+      tooltipFontSize: 18,
+      tooltipFillColor: "rgba(255,255,255,0.9)",
+      tooltipFontColor: "#444",
+      tooltipYPadding: 12,
+      tooltipXPadding: 12,
+      tooltipTemplate: "<%if (label){%><%=label%> Temperatura: <%}%><%= value %>",
     });
 
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
