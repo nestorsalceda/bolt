@@ -2,8 +2,6 @@ require 'sinatra/base'
 require 'faye/websocket'
 require 'slim'
 require 'json'
-require 'better_errors' if development?
-require 'sinatra/reloader' if development?
 
 module Bolt
   class Application < Sinatra::Base
@@ -21,10 +19,10 @@ module Bolt
     end
 
     configure :development do
+      require 'better_errors'
+
       use BetterErrors::Middleware
       BetterErrors.application_root = __dir__
-
-      register Sinatra::Reloader
     end
 
     get '/' do
