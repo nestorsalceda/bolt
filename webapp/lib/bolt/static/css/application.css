@@ -5,3 +5,7 @@
 #temperature-graph {
   padding-right: 32px;
 }
+
+.ct-label {
+  font-size: 2rem;
+}

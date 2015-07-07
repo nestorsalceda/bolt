@@ -5,7 +5,7 @@
         i.fa.fa-line-chart
         h3.box-title Temperaturas de hoy
       .box-body
-        canvas#temperature-graph height="100%"
+        #temperature-graph.ct-chart.ct-major-eleventh
 
 .row
   section.col-md-4.col-xs-6
@@ -69,34 +69,30 @@ javascript:
       setSwitchState(true);
     });
 
-    var graphDataIsFresh = true;
     var graphData = {
       labels: #{{today_timeseries}}.map(function(x) {
         return new Date(x * 1000).toLocaleTimeString()
       }).reverse(),
-      datasets: [
-      {
-        label: "Temperatura interior",
-        fillColor: "rgba(151,187,205,0.2)",
-        strokeColor: "rgba(151,187,205,1)",
-        pointColor: "rgba(151,187,205,1)",
-        pointStrokeColor: "#fff",
-        pointHighlightFill: "#fff",
-        pointHighlightStroke: "rgba(151,187,205,1)",
-        data: #{{today_temperatures}}.reverse()
-      }]
+      series: [
+        #{{today_temperatures}}.reverse()
+      ]
     };
-    var context = document.getElementById("temperature-graph").getContext("2d");
-    var graph = new Chart(context).Line(graphData, {
-      responsive: true,
-      scaleShowVerticalLines: false,
-      tooltipFontSize: 18,
-      tooltipFillColor: "rgba(255,255,255,0.9)",
-      tooltipFontColor: "#444",
-      tooltipYPadding: 12,
-      tooltipXPadding: 12,
-      tooltipTemplate: "<%if (label){%><%=label%> Temperatura: <%}%><%= value %>",
-    });
+    var graphDataIsFresh = true;
+
+    var graph = Chartist.Line("#temperature-graph", graphData, {
+      showArea: true,
+      lineSmooth: Chartist.Interpolation.simple({
+        divisor: 2
+      }),
+      fullWidth: true,
+      low: 0,
+      axisX: {
+        labelInterpolationFnc: function(value) {
+          return "";
+        }
+      }
+    }
+    );
 
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
     ws.onmessage = function(event) {
@@ -109,16 +105,23 @@ javascript:
         case 'temperature':
           $('#temperature').text(message.value);
           if (!graphDataIsFresh) {
-            graphData.pop();
+            graphData.labels.pop();
+            graphData.series[0].pop();
           }
-          graphData.push({temperature: parseFloat(message.value), timestamp: parseInt(message.timestamp)});
+          graphData.labels.push(new Date(message.timestamp * 1000).toLocaleTimeString());
+          graphData.series[0].push(message.value);
           graphDataIsFresh = false;
-          graph.setData(graphData);
+          graph.update(graphData);
           break;
         case 'today_temperatures':
-          graphData = message.value;
+          graphData.labels = message.value.map(function(x) {
+            return new Date(x.timestamp * 1000).toLocaleTimeString()
+          }).reverse();
+          graphData.series = [message.value.map(function(x) {
+            return x.temperature;
+          }).reverse()];
           graphDataIsFresh = true;
-          graph.setData(graphData);
+          graph.update(graphData);
           break;
       }
     };
