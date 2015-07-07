@@ -5,9 +5,7 @@ module Bolt
     end
 
     def temperature_retriever
-      @temperature_retriever unless @temperature_retriever.nil?
-
-      @temperature_retriever = TemperatureRetriever.new(arduino)
+      @temperature_retriever ||= TemperatureRetriever.new(arduino)
     end
 
     def message_hub
@@ -17,9 +15,7 @@ module Bolt
     end
 
     def temperature_repository
-      return @temperature_repository unless @temperature_repository.nil?
-
-      @temperature_repository = TemperatureRepository.new(InfluxDBClient.new('bolt'))
+      @temperature_repository ||= TemperatureRepository.new(InfluxDBClient.new('bolt'))
     end
 
     def scheduled_temperature_notifier

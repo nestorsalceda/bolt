@@ -33,9 +33,12 @@
       .box-header
         i.fa.fa-sun-o
         h3.box-title Temperatura interior
+        h3.box-title.pull-right#temperature-at-timestamp
       .box-body.text-center
         span#temperature
           = temperature
+        span#temperature-at
+
 
 javascript:
   $(function() {
@@ -70,12 +73,15 @@ javascript:
     });
 
     var graphData = {
-      labels: #{{today_timeseries}}.map(function(x) {
-        return new Date(x * 1000).toLocaleTimeString()
+      labels: #{{today_temperatures}}.map(function(value) {
+        return value.timestamp
       }).reverse(),
-      series: [
-        #{{today_temperatures}}.reverse()
-      ]
+      series: [#{{today_temperatures}}.map(function(value) {
+        return {
+          meta: value.timestamp,
+          value: value.temperature,
+        }
+      }).reverse()]
     };
     var graphDataIsFresh = true;
 
@@ -94,6 +100,26 @@ javascript:
     }
     );
 
+    var $temperatureGraph = $('#temperature-graph');
+    var $temperature = $('#temperature');
+    var $temperatureAt = $('#temperature-at');
+    var $temperatureAtTimestamp = $('#temperature-at-timestamp');
+    $temperatureGraph.on('mouseenter', '.ct-point', function() {
+      var $point = $(this), value = $point.attr('ct:value'), timestamp = new Date(parseInt($point.attr('ct:meta')) * 1000).toLocaleTimeString();
+      $temperatureAt.text(value);
+      $temperatureAtTimestamp.text(timestamp);
+
+      $temperature.hide();
+      $temperatureAt.show();
+      $temperatureAtTimestamp.show();
+    });
+
+    $temperatureGraph.on('mouseleave', '.ct-point', function() {
+      $temperatureAt.hide();
+      $temperatureAtTimestamp.hide();
+      $temperature.show();
+    });
+
     var ws = new WebSocket('ws://' + window.location.host + window.location.pathname);
     ws.onmessage = function(event) {
       var message = JSON.parse(event.data);
@@ -103,22 +129,25 @@ javascript:
           setSwitchState(message.enabled);
           break;
         case 'temperature':
-          $('#temperature').text(message.value);
+          $temperature.text(message.value);
           if (!graphDataIsFresh) {
             graphData.labels.pop();
             graphData.series[0].pop();
           }
-          graphData.labels.push(new Date(message.timestamp * 1000).toLocaleTimeString());
-          graphData.series[0].push(message.value);
+          graphData.labels.push(message.timestamp);
+          graphData.series[0].push({meta: message.timestamp, value :message.value});
           graphDataIsFresh = false;
           graph.update(graphData);
           break;
         case 'today_temperatures':
           graphData.labels = message.value.map(function(x) {
-            return new Date(x.timestamp * 1000).toLocaleTimeString()
+            return x.timestamp;
           }).reverse();
-          graphData.series = [message.value.map(function(x) {
-            return x.temperature;
+          graphData.series = [message.value.map(function(value) {
+            return {
+              meta: value.timestamp,
+              value: value.temperature,
+            }
           }).reverse()];
           graphDataIsFresh = true;
           graph.update(graphData);
