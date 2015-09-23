@@ -102,6 +102,5 @@ void loop()
       Serial.println("ERROR: Unknown command " + command);
     }
   }
-  delay(20);
 }
 
