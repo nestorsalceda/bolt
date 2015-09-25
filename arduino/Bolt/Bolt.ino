@@ -59,6 +59,27 @@ float temperature(int b=3950.0, int r_0=2800, float t_0=298.15)
   return t_kelvin - 273.15;
 }
 
+void spectrum()
+{
+  unsigned int colours[3];
+
+  colours[0] = 255;
+  colours[1] = 0;
+  colours[2] = 0;
+
+  for(int decrement = 0; decrement < 3; decrement++) {
+    int increment = decrement == 2 ? 0 : decrement + 1;
+
+    for(int i = 0; i < 255; i++) {
+      colours[decrement]--;
+      colours[increment]++;
+
+      rgb(colours[0], colours[1], colours[2]);
+      delay(200);
+    }
+  }
+}
+
 void loop()
 {
   if (Serial.available())
@@ -96,6 +117,10 @@ void loop()
       {
         Serial.println("ERROR: Add RGB colors to command");
       }
+    }
+    else if (command == "spectrum")
+    {
+      spectrum();
     }
     else
     {
