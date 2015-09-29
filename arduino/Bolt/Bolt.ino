@@ -10,6 +10,9 @@ String command = "";
 String read_colors = "";
 boolean enabled = false;
 
+unsigned long previousMillis = 0;
+unsigned long interval = 10;
+
 void setup()
 {
   Serial.begin(115200);
@@ -82,8 +85,9 @@ void spectrum()
 
 void loop()
 {
-  if (Serial.available())
+  if (millis() - previousMillis > interval && Serial.available())
   {
+    previousMillis = millis();
     command = Serial.readStringUntil('\n');
     command.trim();
 
