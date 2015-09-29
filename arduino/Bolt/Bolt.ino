@@ -122,10 +122,6 @@ void loop()
         Serial.println("ERROR: Add RGB colors to command");
       }
     }
-    else if (command == "spectrum")
-    {
-      spectrum();
-    }
     else
     {
       Serial.println("ERROR: Unknown command " + command);
